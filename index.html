@@ -3,84 +3,372 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reset Password</title>
+  <title>Reset Password - Stora</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background: #f8f8f8;
-    }
-    form {
-      background: white;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
-      display: flex;
-      flex-direction: column;
-      width: 300px;
-      gap: 10px;
     }
-    input, button {
-      padding: 10px;
+    
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 420px;
+    }
+    
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo h1 {
+      font-size: 36px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 2px;
+    }
+    
+    h2 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 24px;
+      text-align: center;
+    }
+    
+    .subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    
+    .input-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+    
+    label {
+      display: block;
+      color: #555;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    input {
+      width: 100%;
+      padding: 14px 16px;
       font-size: 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      outline: none;
     }
+    
+    input:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    input.valid {
+      border-color: #4caf50;
+    }
+    
+    input.invalid {
+      border-color: #f44336;
+    }
+    
+    .requirements {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .requirements h4 {
+      color: #333;
+      font-size: 14px;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    
+    .requirement {
+      display: flex;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 13px;
+      color: #666;
+      transition: all 0.3s ease;
+    }
+    
+    .requirement .icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    
+    .requirement.met {
+      color: #4caf50;
+    }
+    
+    .requirement.met .icon {
+      background: #4caf50;
+      border-color: #4caf50;
+    }
+    
+    .requirement.met .icon::after {
+      content: "✓";
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
     button {
-      background: #0070f3;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
     }
+    
     button:hover {
-      background: #0059c9;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .match-indicator {
+      margin-top: 8px;
+      font-size: 13px;
+      display: none;
+    }
+    
+    .match-indicator.show {
+      display: block;
+    }
+    
+    .match-indicator.match {
+      color: #4caf50;
+    }
+    
+    .match-indicator.no-match {
+      color: #f44336;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    
+    .shake {
+      animation: shake 0.3s ease;
     }
   </style>
 </head>
 <body>
-  <form id="resetForm">
+  <div class="container">
+    <div class="logo">
+      <h1>Stora</h1>
+    </div>
+    
     <h2>Reset Password</h2>
-    <input type="password" id="newPassword" placeholder="New Password" required />
-    <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
-    <button type="submit">Reset</button>
-  </form>
-
+    <p class="subtitle">Create a strong password for your account</p>
+    
+    <form id="resetForm">
+      <div class="input-group">
+        <label for="newPassword">New Password</label>
+        <input type="password" id="newPassword" placeholder="Enter new password" required />
+      </div>
+      
+      <div class="requirements">
+        <h4>Password Requirements:</h4>
+        <div class="requirement" id="req-length">
+          <span class="icon"></span>
+          <span>At least 8 characters</span>
+        </div>
+        <div class="requirement" id="req-upper">
+          <span class="icon"></span>
+          <span>One uppercase letter</span>
+        </div>
+        <div class="requirement" id="req-digit">
+          <span class="icon"></span>
+          <span>One digit (0-9)</span>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm new password" required />
+        <div class="match-indicator" id="matchIndicator"></div>
+      </div>
+      
+      <button type="submit" id="submitBtn">Reset Password</button>
+    </form>
+  </div>
+  
   <script>
-    // ناخد التوكن من اللينك اللي Supabase بعت المستخدم عليه
     const urlParams = new URLSearchParams(window.location.hash.slice(1));
     const accessToken = urlParams.get('access_token');
-
+    
     if (!accessToken) {
       alert("Invalid reset link!");
     }
-
+    
+    const newPasswordInput = document.getElementById('newPassword');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const submitBtn = document.getElementById('submitBtn');
+    const matchIndicator = document.getElementById('matchIndicator');
+    
+    const requirements = {
+      length: { element: document.getElementById('req-length'), test: (pw) => pw.length >= 8 },
+      upper: { element: document.getElementById('req-upper'), test: (pw) => /[A-Z]/.test(pw) },
+      digit: { element: document.getElementById('req-digit'), test: (pw) => /\d/.test(pw) }
+    };
+    
+    function checkPasswordRequirements() {
+      const password = newPasswordInput.value;
+      let allMet = true;
+      
+      for (const key in requirements) {
+        const req = requirements[key];
+        const isMet = req.test(password);
+        
+        if (isMet) {
+          req.element.classList.add('met');
+        } else {
+          req.element.classList.remove('met');
+          allMet = false;
+        }
+      }
+      
+      if (password.length > 0) {
+        newPasswordInput.classList.toggle('valid', allMet);
+        newPasswordInput.classList.toggle('invalid', !allMet);
+      } else {
+        newPasswordInput.classList.remove('valid', 'invalid');
+      }
+      
+      checkPasswordMatch();
+      return allMet;
+    }
+    
+    function checkPasswordMatch() {
+      const password = newPasswordInput.value;
+      const confirm = confirmPasswordInput.value;
+      
+      if (confirm.length === 0) {
+        matchIndicator.classList.remove('show');
+        confirmPasswordInput.classList.remove('valid', 'invalid');
+        return false;
+      }
+      
+      matchIndicator.classList.add('show');
+      
+      if (password === confirm) {
+        matchIndicator.textContent = '✓ Passwords match';
+        matchIndicator.classList.add('match');
+        matchIndicator.classList.remove('no-match');
+        confirmPasswordInput.classList.add('valid');
+        confirmPasswordInput.classList.remove('invalid');
+        return true;
+      } else {
+        matchIndicator.textContent = '✗ Passwords do not match';
+        matchIndicator.classList.add('no-match');
+        matchIndicator.classList.remove('match');
+        confirmPasswordInput.classList.add('invalid');
+        confirmPasswordInput.classList.remove('valid');
+        return false;
+      }
+    }
+    
+    newPasswordInput.addEventListener('input', checkPasswordRequirements);
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+    
     async function resetPassword(newPassword) {
       const res = await fetch('/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ access_token: accessToken, newPassword })
       });
-
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed');
       alert('Password updated successfully!');
     }
-
+    
     document.getElementById('resetForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const newPassword = document.getElementById('newPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-      if (newPassword !== confirmPassword) {
-        alert('Passwords do not match!');
+      
+      const newPassword = newPasswordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      
+      const requirementsMet = checkPasswordRequirements();
+      const passwordsMatch = checkPasswordMatch();
+      
+      if (!requirementsMet) {
+        alert('Please meet all password requirements!');
+        newPasswordInput.classList.add('shake');
+        setTimeout(() => newPasswordInput.classList.remove('shake'), 300);
         return;
       }
-
+      
+      if (!passwordsMatch) {
+        alert('Passwords do not match!');
+        confirmPasswordInput.classList.add('shake');
+        setTimeout(() => confirmPasswordInput.classList.remove('shake'), 300);
+        return;
+      }
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Resetting...';
+      
       try {
         await resetPassword(newPassword);
       } catch (err) {
         alert('Error: ' + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Reset Password';
       }
     });
   </script>
