@@ -32,7 +32,7 @@
     
     .logo {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
     }
     
     .logo h1 {
@@ -47,7 +47,7 @@
     
     h2 {
       color: #333;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-size: 24px;
       text-align: center;
     }
@@ -55,13 +55,18 @@
     .subtitle {
       color: #666;
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
       font-size: 14px;
+      line-height: 1.5;
     }
     
     .input-group {
-      margin-bottom: 25px;
+      margin-bottom: 28px;
       position: relative;
+    }
+    
+    .input-group:last-of-type {
+      margin-bottom: 30px;
     }
     
     label {
@@ -72,14 +77,34 @@
       margin-bottom: 8px;
     }
     
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    
     input {
       width: 100%;
-      padding: 14px 16px;
+      padding: 14px 50px 14px 16px;
       font-size: 16px;
       border: 2px solid #e0e0e0;
       border-radius: 10px;
       transition: all 0.3s ease;
       outline: none;
+    }
+    
+    .eye-icon {
+      position: absolute;
+      right: 16px;
+      cursor: pointer;
+      color: #999;
+      transition: color 0.3s ease;
+      user-select: none;
+      font-size: 20px;
+    }
+    
+    .eye-icon:hover {
+      color: #667eea;
     }
     
     input:focus {
@@ -204,6 +229,47 @@
     .shake {
       animation: shake 0.3s ease;
     }
+    
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      
+      .container {
+        padding: 30px 20px;
+      }
+      
+      .logo h1 {
+        font-size: 28px;
+      }
+      
+      h2 {
+        font-size: 20px;
+      }
+      
+      input, button {
+        font-size: 15px;
+      }
+    }
+    
+    @media (max-width: 360px) {
+      .container {
+        padding: 25px 15px;
+      }
+      
+      .logo h1 {
+        font-size: 24px;
+      }
+      
+      .requirements {
+        padding: 12px;
+      }
+      
+      .requirement {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -218,7 +284,10 @@
     <form id="resetForm">
       <div class="input-group">
         <label for="newPassword">New Password</label>
-        <input type="password" id="newPassword" placeholder="Enter new password" required />
+        <div class="password-wrapper">
+          <input type="password" id="newPassword" placeholder="Enter new password" required />
+          <span class="eye-icon" id="toggleNewPassword">👁️</span>
+        </div>
       </div>
       
       <div class="requirements">
@@ -239,7 +308,10 @@
       
       <div class="input-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" placeholder="Confirm new password" required />
+        <div class="password-wrapper">
+          <input type="password" id="confirmPassword" placeholder="Confirm new password" required />
+          <span class="eye-icon" id="toggleConfirmPassword">👁️</span>
+        </div>
         <div class="match-indicator" id="matchIndicator"></div>
       </div>
       
@@ -259,6 +331,21 @@
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const submitBtn = document.getElementById('submitBtn');
     const matchIndicator = document.getElementById('matchIndicator');
+    const toggleNewPassword = document.getElementById('toggleNewPassword');
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    
+    // Toggle password visibility
+    toggleNewPassword.addEventListener('click', function() {
+      const type = newPasswordInput.type === 'password' ? 'text' : 'password';
+      newPasswordInput.type = type;
+      this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+    
+    toggleConfirmPassword.addEventListener('click', function() {
+      const type = confirmPasswordInput.type === 'password' ? 'text' : 'password';
+      confirmPasswordInput.type = type;
+      this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
     
     const requirements = {
       length: { element: document.getElementById('req-length'), test: (pw) => pw.length >= 8 },
